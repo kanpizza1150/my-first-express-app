@@ -1,6 +1,10 @@
 const Joi = require("joi");
 const helmet = require("helmet");
 const config = require("config");
+
+const startupDebugger = require("debug")("app:startup");
+const dbDebugger = require("debug")("app:db");
+
 const morgan = require("morgan");
 const express = require("express");
 const log = require("./logger");
@@ -22,7 +26,11 @@ app.use(express.static("public"));
 app.use(helmet());
 if (app.get("env") === "development") {
   app.use(morgan("tiny")); //to log request
+  startupDebugger("Morgan enabled...");
 }
+
+// DB works
+dbDebugger("Connected to the database");
 
 //custom middleware
 app.use(log);
